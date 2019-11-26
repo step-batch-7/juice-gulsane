@@ -129,4 +129,40 @@ describe("performOperation", function() {
 
     assert.deepStrictEqual(actualValue, expectedValue);
   });
+
+  it.only("should choose query action if --query command is given", function() {
+    const userArgs = ["--Query", "--empId", "12345"];
+    const fileFunctions = {
+      readFile: (path, encode) => {
+        assert.strictEqual(path, "./hai");
+        assert.strictEqual(encode, "utf8");
+        return "{}";
+      },
+      writeFile: (path, content, encode) => {
+        assert.strictEqual(path, "./hai");
+        assert.strictEqual(
+          content,
+          '{"111":[{"empId":"111","beverage":"orange","qty":1,"date":"2019-11-26T17:32:02.942Z"}]}'
+        );
+        assert.strictEqual(encode, "utf8");
+      },
+      existsFile: path => {
+        assert.strictEqual(path, "./hai");
+        return true;
+      }
+    };
+
+    let date = function() {
+      return "2019-11-26T17:32:02.942Z";
+    };
+
+    let actualValue = performOperation(
+      "./hai",
+      fileFunctions,
+      userArgs,
+      date()
+    );
+    let expectedValue = "there is no transaction with empId: 12345";
+    assert.strictEqual(actualValue, expectedValue);
+  });
 });
