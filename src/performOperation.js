@@ -1,6 +1,16 @@
-const fs = require("fs");
-const operations = require("./operations.js").operations;
-//const status = require("./status.js").status;
+const updateTransaction = require("./operations.js").updateTransaction;
+const queryTransactions = require("./operations.js").queryTransactions;
+const status = require("./status.js").status;
+
+const generateContent = function(filePath, readFile, existsFile) {
+  let fileContent = existsFile(filePath) && readFile(filePath, "utf8");
+  return JSON.parse(fileContent) || {};
+};
+
+const saveTransaction = function(updatedTransaction, fileFunctions, filePath) {
+  let stringifiedUpdatedTransaction = JSON.stringify(updatedTransaction);
+  fileFunctions.writeFile(filePath, stringifiedUpdatedTransaction, "utf8");
+};
 
 const parseUserArgs = function(userArgs) {
   let empId = userArgs[2];
@@ -14,11 +24,51 @@ const parseUserArgs = function(userArgs) {
   return parsedArgs;
 };
 
-const performOperation = function(oldTransactions, userArgs) {
-  let action = userArgs[0];
+const doSaveOperation = function(
+  oldTransactions,
+  parsedUserArgs,
+  date,
+  fileFunctions,
+  filePath
+) {
+  parsedUserArgs["date"] = date;
+  let updatedTransaction = updateTransaction(oldTransactions, parsedUserArgs);
+  saveTransaction(updatedTransaction, fileFunctions, filePath);
+  return status["--save"](parsedUserArgs);
+};
+
+const doQueryOperation = function(oldTransactions, parsedUserArgs) {
+  let empId = parsedUserArgs.empId;
+  if (!oldTransactions[empId]) {
+    return "there is no transaction with empId: " + empId;
+  }
+  let queryStatus = queryTransactions(oldTransactions, parsedUserArgs);
+  return status["--query"](queryStatus);
+};
+
+const performOperation = function(filePath, fileFunctions, userArgs, date) {
+  const action = userArgs[0];
   let parsedUserArgs = parseUserArgs(userArgs);
-  return operations[action](oldTransactions, parsedUserArgs);
+  const readFile = fileFunctions["readFile"];
+  const existsFile = fileFunctions["existsFile"];
+  const oldTransactions = generateContent(filePath, readFile, existsFile);
+  if (action == "--save") {
+    let status = doSaveOperation(
+      oldTransactions,
+      parsedUserArgs,
+      date,
+      fileFunctions,
+      filePath
+    );
+    return status;
+  }
+
+  let status = doQueryOperation(oldTransactions, parsedUserArgs);
+  return status;
 };
 
 exports.performOperation = performOperation;
 exports.parseUserArgs = parseUserArgs;
+exports.generateContent = generateContent;
+exports.doSaveOperation = doSaveOperation;
+exports.doQueryOperation = doQueryOperation;

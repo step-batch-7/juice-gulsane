@@ -1,9 +1,8 @@
 const assert = require("assert");
 const updateTransaction = require("../src/operations.js").updateTransaction;
-const saveLogs = require("../src/operations.js").saveLogs;
 const giveTotalQty = require("../src/operations.js").giveTotalQty;
 const extractDetail = require("../src/operations.js").extractDetail;
-const queryLogs = require("../src/operations.js").queryLogs;
+const queryTransactions = require("../src/operations.js").queryTransactions;
 
 describe("updateTransactions", function() {
   it("should update the given transaction in empId if it not exixts already", function() {
@@ -34,50 +33,6 @@ describe("updateTransactions", function() {
   });
 });
 
-describe("saveLogs", function() {
-  it("should update the transaction in id of employee", function() {
-    let actualValue = saveLogs(
-      {},
-      { empId: "11111", beverage: "orange", qty: "1" }
-    );
-    let expectedValue = {
-      "11111": [
-        {
-          empId: "11111",
-          beverage: "orange",
-          qty: "1",
-          date: actualValue["11111"][0].date
-        }
-      ]
-    };
-
-    assert.deepStrictEqual(actualValue, expectedValue);
-  });
-
-  it("should update the details in already exists employeeId", function() {
-    let actualValue = saveLogs(
-      {
-        "11111": [
-          { empId: "11111", beverage: "orange", qty: "1", date: "10-20=-2" }
-        ]
-      },
-      { empId: "11111", beverage: "watermelon", qty: "1" }
-    );
-    let expectedValue = {
-      "11111": [
-        { empId: "11111", beverage: "orange", qty: "1", date: "10-20=-2" },
-        {
-          empId: "11111",
-          beverage: "watermelon",
-          qty: "1",
-          date: actualValue["11111"][actualValue["11111"].length - 1].date
-        }
-      ]
-    };
-    assert.deepStrictEqual(actualValue, expectedValue);
-  });
-});
-
 describe("giveTotalQty", function() {
   it("should give total qty of transactions", function() {
     let actualValue = giveTotalQty(0, { qty: 1 });
@@ -99,9 +54,9 @@ describe("extractDetail", function() {
   });
 });
 
-describe("queryLogs", function() {
+describe("queryTransactions", function() {
   it("should return all transaction status of a given empId", function() {
-    let actualValue = queryLogs(
+    let actualValue = queryTransactions(
       {
         "11111": [
           { empId: "11111", beverage: "orange", qty: 1, date: "10-20=-2" }
@@ -109,7 +64,7 @@ describe("queryLogs", function() {
       },
       { empId: "11111" }
     );
-    let expectedValue = [["11111", "orange", 1, "10-20=-2"], [1]];
+    let expectedValue = [["11111", "orange", 1, "10-20=-2"], 1];
     assert.deepStrictEqual(actualValue, expectedValue);
   });
 });

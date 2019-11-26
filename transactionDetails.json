@@ -1,9 +1,1 @@
-{
-  "11111": [
-    { "empId": "11111", "beverage": "orange", "qty": 1, "date": "12-12-2019" },
-    { "empId": "11111", "beverage": "mango", "qty": 2, "date": "14-12-2019" }
-  ],
-  "22222": [
-    { "empId": "22222", "beverage": "grape", "qty": 1, "date": "13-12-2019" }
-  ]
-}
+{}
