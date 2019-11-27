@@ -6,13 +6,23 @@ const generateTransactionStatus = function(parsedUserArgs) {
   return transactionStatus;
 };
 
-const generateQueryStatus = function(queryStatus) {
+const giveTotalQty = function(sum, transaction) {
+  let qty = transaction.qty;
+  return sum + qty;
+};
+
+const extractFields = function(transaction) {
+  return Object.values(transaction);
+};
+
+const generateQueryStatus = function(empTransactionsDetail) {
   let header = ["Employee ID,Beverage,Quantity,Date"];
-  let totalQty = queryStatus.pop();
+  let totalQty = empTransactionsDetail.reduce(giveTotalQty, 0);
   let footer = "Total: " + totalQty + " Juices";
-  queryStatus.unshift(header);
-  queryStatus.push(footer);
-  return queryStatus.join("\n");
+  let status = empTransactionsDetail.map(extractFields);
+  status.unshift(header);
+  status.push(footer);
+  return status.join("\n");
 };
 
 let status = {
@@ -23,3 +33,5 @@ let status = {
 exports.generateTransactionStatus = generateTransactionStatus;
 exports.generateQueryStatus = generateQueryStatus;
 exports.status = status;
+exports.giveTotalQty = giveTotalQty;
+exports.extractFields = extractFields;

@@ -3,25 +3,17 @@ const updateTransaction = function(oldTransactions, parsedUserArgs) {
   return oldTransactions;
 };
 
-const giveTotalQty = function(sum, transaction) {
-  let qty = transaction.qty;
-  return sum + qty;
-};
-
-const extractDetail = function(transaction) {
-  return Object.values(transaction);
+const extractEmpDetails = function(empId) {
+  return function(transaction) {
+    return transaction["empId"] == empId;
+  };
 };
 
 const queryTransactions = function(oldTransactions, parsedUserArgs) {
   let empId = parsedUserArgs.empId;
-  let transactionDetails = oldTransactions[empId];
-  let totalQty = transactionDetails.reduce(giveTotalQty, 0);
-  let queryStatus = transactionDetails.map(extractDetail);
-  queryStatus.push(totalQty);
-  return queryStatus;
+  let empTransactionsDetail = oldTransactions.filter(extractEmpDetails(empId));
+  return empTransactionsDetail;
 };
 
 exports.updateTransaction = updateTransaction;
-exports.giveTotalQty = giveTotalQty;
-exports.extractDetail = extractDetail;
 exports.queryTransactions = queryTransactions;

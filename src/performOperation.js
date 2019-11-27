@@ -38,7 +38,6 @@ const doSaveOperation = function(
 };
 
 const doQueryOperation = function(oldTransactions, parsedUserArgs) {
-  console.log(oldTransactions);
   let empId = parsedUserArgs.empId;
   if (oldTransactions[empId]) {
     return "there is no transaction with empId: " + empId;

@@ -60,17 +60,14 @@ describe("generateContent", function() {
 
 describe("doQueryOperation", function() {
   it("should return an message when empId is not in transactions history", function() {
-    let actualValue = doQueryOperation({}, { empId: "11111" });
-    let expectedValue = "there is no transaction with empId: " + "11111";
+    let actualValue = doQueryOperation([], { empId: "11111" });
+    let expectedValue =
+      "Employee ID,Beverage,Quantity,Date\n" + "Total: 0 Juices";
     assert.strictEqual(actualValue, expectedValue);
   });
   it("should return transaction details if empId present in transaction history", function() {
     let actualValue = doQueryOperation(
-      {
-        "11111": [
-          { empId: "11111", beverage: "orange", qty: 1, date: "10-10-2019" }
-        ]
-      },
+      [{ empId: "11111", beverage: "orange", qty: 1, date: "10-10-2019" }],
       { empId: "11111" }
     );
     let expectedValue =
@@ -136,13 +133,13 @@ describe("performOperation", function() {
       readFile: (path, encode) => {
         assert.strictEqual(path, "./hai");
         assert.strictEqual(encode, "utf8");
-        return "{}";
+        return "[]";
       },
       writeFile: (path, content, encode) => {
         assert.strictEqual(path, "./hai");
         assert.strictEqual(
           content,
-          '{"111":[{"empId":"111","beverage":"orange","qty":1,"date":"2019-11-26T17:32:02.942Z"}]}'
+          '[{"empId":"111","beverage":"orange","qty":1,"date":"2019-11-26T17:32:02.942Z"}]'
         );
         assert.strictEqual(encode, "utf8");
       },
@@ -162,7 +159,8 @@ describe("performOperation", function() {
       userArgs,
       date()
     );
-    let expectedValue = "there is no transaction with empId: 12345";
+    let expectedValue =
+      "Employee ID,Beverage,Quantity,Date\n" + "Total: 0 Juices";
     assert.strictEqual(actualValue, expectedValue);
   });
 });
