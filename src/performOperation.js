@@ -4,7 +4,7 @@ const status = require("./status.js").status;
 
 const generateContent = function(filePath, readFile, existsFile) {
   let fileContent = existsFile(filePath) && readFile(filePath, "utf8");
-  return JSON.parse(fileContent) || {};
+  return JSON.parse(fileContent) || [];
 };
 
 const saveTransaction = function(updatedTransaction, fileFunctions, filePath) {
@@ -38,8 +38,9 @@ const doSaveOperation = function(
 };
 
 const doQueryOperation = function(oldTransactions, parsedUserArgs) {
+  console.log(oldTransactions);
   let empId = parsedUserArgs.empId;
-  if (!oldTransactions[empId]) {
+  if (oldTransactions[empId]) {
     return "there is no transaction with empId: " + empId;
   }
   let queryStatus = queryTransactions(oldTransactions, parsedUserArgs);

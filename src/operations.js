@@ -1,10 +1,5 @@
 const updateTransaction = function(oldTransactions, parsedUserArgs) {
-  let empId = parsedUserArgs.empId;
-
-  if (!oldTransactions[empId]) {
-    oldTransactions[empId] = [];
-  }
-  oldTransactions[empId].push(parsedUserArgs);
+  oldTransactions.push(parsedUserArgs);
   return oldTransactions;
 };
 

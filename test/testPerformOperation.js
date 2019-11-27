@@ -39,7 +39,7 @@ describe("generateContent", function() {
       return "something";
     };
     let actualValue = generateContent("./hai", readFile, existsFile);
-    let expectedValue = {};
+    let expectedValue = [];
     assert.deepStrictEqual(actualValue, expectedValue);
   });
   it("should return the parsed content of file when path is right", function() {
@@ -96,13 +96,13 @@ describe("performOperation", function() {
       readFile: (path, encode) => {
         assert.strictEqual(path, "./hai");
         assert.strictEqual(encode, "utf8");
-        return "{}";
+        return "[]";
       },
       writeFile: (path, content, encode) => {
         assert.strictEqual(path, "./hai");
         assert.strictEqual(
           content,
-          '{"111":[{"empId":"111","beverage":"orange","qty":1,"date":"2019-11-26T17:32:02.942Z"}]}'
+          '[{"empId":"111","beverage":"orange","qty":1,"date":"2019-11-26T17:32:02.942Z"}]'
         );
         assert.strictEqual(encode, "utf8");
       },
@@ -130,7 +130,7 @@ describe("performOperation", function() {
     assert.deepStrictEqual(actualValue, expectedValue);
   });
 
-  it.only("should choose query action if --query command is given", function() {
+  it("should choose query action if --query command is given", function() {
     const userArgs = ["--Query", "--empId", "12345"];
     const fileFunctions = {
       readFile: (path, encode) => {
