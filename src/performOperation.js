@@ -1,6 +1,8 @@
 const updateTransaction = require("./operations.js").updateTransaction;
 const queryTransactions = require("./operations.js").queryTransactions;
 const status = require("./status.js").status;
+const transformUserArgsData = require("../utilsLab/transformUserArgsData.js")
+  .transformUserArgsData;
 
 const generateContent = function(filePath, readFile, existsFile) {
   let fileContent = existsFile(filePath) && readFile(filePath, "utf8");
@@ -13,14 +15,10 @@ const saveTransaction = function(updatedTransaction, fileFunctions, filePath) {
 };
 
 const parseUserArgs = function(userArgs) {
-  let empId = userArgs[2];
-  let parsedArgs = { empId: empId };
-  if (userArgs[0] == "--save") {
-    let beverage = userArgs[2];
-    let qty = +userArgs[6];
-    empId = userArgs[4];
-    parsedArgs = { empId: empId, beverage: beverage, qty: qty };
-  }
+  const beverage = userArgs[2];
+  const qty = +userArgs[6];
+  const empId = userArgs[4];
+  const parsedArgs = { empId: empId, beverage: beverage, qty: qty };
   return parsedArgs;
 };
 
@@ -37,22 +35,18 @@ const doSaveOperation = function(
   return status["--save"](parsedUserArgs);
 };
 
-const doQueryOperation = function(oldTransactions, parsedUserArgs) {
-  let empId = parsedUserArgs.empId;
-  if (oldTransactions[empId]) {
-    return "there is no transaction with empId: " + empId;
-  }
-  let queryStatus = queryTransactions(oldTransactions, parsedUserArgs);
+const doQueryOperation = function(oldTransactions, transformedUserArgsData) {
+  let queryStatus = queryTransactions(oldTransactions, transformedUserArgsData);
   return status["--query"](queryStatus);
 };
 
 const performOperation = function(filePath, fileFunctions, userArgs, date) {
-  const action = userArgs[0];
+  let transformedUserArgsData = transformUserArgsData(userArgs);
   let parsedUserArgs = parseUserArgs(userArgs);
   const readFile = fileFunctions["readFile"];
   const existsFile = fileFunctions["existsFile"];
   const oldTransactions = generateContent(filePath, readFile, existsFile);
-  if (action == "--save") {
+  if (transformedUserArgsData["--save"]) {
     let status = doSaveOperation(
       oldTransactions,
       parsedUserArgs,
@@ -63,7 +57,7 @@ const performOperation = function(filePath, fileFunctions, userArgs, date) {
     return status;
   }
 
-  let status = doQueryOperation(oldTransactions, parsedUserArgs);
+  let status = doQueryOperation(oldTransactions, transformedUserArgsData);
   return status;
 };
 

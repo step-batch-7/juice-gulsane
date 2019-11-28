@@ -3,15 +3,25 @@ const updateTransaction = function(oldTransactions, parsedUserArgs) {
   return oldTransactions;
 };
 
-const extractEmpDetails = function(empId) {
+const extractEmpDetails = function(filterParameters) {
   return function(transaction) {
-    return transaction["empId"] == empId;
+    let isEmpId = true;
+    if (filterParameters["--empId"]) {
+      isEmpId = transaction["empId"] == filterParameters["--empId"];
+    }
+    let isBeverage = true;
+    if (filterParameters["--beverage"]) {
+      isBeverage = transaction["beverage"] == filterParameters["--beverage"];
+    }
+    return isEmpId && isBeverage;
   };
 };
 
-const queryTransactions = function(oldTransactions, parsedUserArgs) {
-  let empId = parsedUserArgs.empId;
-  let empTransactionsDetail = oldTransactions.filter(extractEmpDetails(empId));
+const queryTransactions = function(oldTransactions, transformedUserArgsData) {
+  const filterParameters = transformedUserArgsData["--query"];
+  const empTransactionsDetail = oldTransactions.filter(
+    extractEmpDetails(filterParameters)
+  );
   return empTransactionsDetail;
 };
 

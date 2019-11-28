@@ -12,13 +12,18 @@ const giveTotalQty = function(sum, transaction) {
 };
 
 const extractFields = function(transaction) {
-  return Object.values(transaction);
+  const empId = transaction.empId;
+  const beverage = transaction.beverage;
+  const qty = transaction.qty;
+  const date = transaction.date;
+  const fields = [empId, beverage, qty, date];
+  return fields;
 };
 
 const generateQueryStatus = function(empTransactionsDetail) {
-  let header = ["Employee ID,Beverage,Quantity,Date"];
+  let header = "Employee ID,Beverage,Quantity,Date";
   let totalQty = empTransactionsDetail.reduce(giveTotalQty, 0);
-  let footer = "Total: " + totalQty + " Juices";
+  let footer = `Total: ${totalQty} Juices`;
   let status = empTransactionsDetail.map(extractFields);
   status.unshift(header);
   status.push(footer);

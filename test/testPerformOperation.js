@@ -1,4 +1,5 @@
-const assert = require("assert");
+const chai = require("chai");
+const assert = chai.assert;
 const performOperation = require("../src/performOperation.js").performOperation;
 const parseUserArgs = require("../src/performOperation.js").parseUserArgs;
 const generateContent = require("../src/performOperation.js").generateContent;
@@ -6,12 +7,6 @@ const doQueryOperation = require("../src/performOperation.js").doQueryOperation;
 const doSaveOperation = require("../src/performOperation.js").doSaveOperation;
 
 describe("parseUserArgs", function() {
-  it("should return empId in object if query action is given", function() {
-    let actualValue = parseUserArgs(["--query", "empId", "11111"]);
-    let expectedValue = { empId: "11111" };
-    assert.deepStrictEqual(actualValue, expectedValue);
-  });
-
   it("should return empId, beverage, qty if --save action is given", function() {
     let actualValue = parseUserArgs([
       "--save",
@@ -68,7 +63,7 @@ describe("doQueryOperation", function() {
   it("should return transaction details if empId present in transaction history", function() {
     let actualValue = doQueryOperation(
       [{ empId: "11111", beverage: "orange", qty: 1, date: "10-10-2019" }],
-      { empId: "11111" }
+      { "--query": { "--empId": "11111" } }
     );
     let expectedValue =
       "Employee ID,Beverage,Quantity,Date\n" +
