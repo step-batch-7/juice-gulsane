@@ -4,6 +4,7 @@ const generateTransactionStatus = require("../src/status.js")
 const generateQueryStatus = require("../src/status.js").generateQueryStatus;
 const giveTotalQty = require("../src/status.js").giveTotalQty;
 const extractFields = require("../src/status.js").extractFields;
+const getFooter = require("../src/status.js").getFooter;
 
 describe("generateTransactionStatus", function() {
   it("should give transaction status in string", function() {
@@ -51,7 +52,20 @@ describe("generateQueryStatus", function() {
     let expectedValue =
       "Employee ID,Beverage,Quantity,Date\n" +
       "11111,orange,1,12-12-2019\n" +
-      "Total: 1 Juices";
+      "Total: 1 Juice";
     assert.deepStrictEqual(actualValue, expectedValue);
+  });
+});
+
+describe("getFooter", function() {
+  it("should return footer with singular juice syntax if qty is less than 2", function() {
+    let actualValue = getFooter(1);
+    let expectedValue = "Total: 1 Juice";
+    assert.strictEqual(actualValue, expectedValue);
+  });
+  it("should return footer with plural juice syntax if qty is more than 1", function() {
+    let actualValue = getFooter(2);
+    let expectedValue = "Total: 1 Juices";
+    asseert.strictEqual(actualValue, expectedValue);
   });
 });

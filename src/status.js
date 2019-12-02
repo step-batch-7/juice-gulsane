@@ -21,10 +21,18 @@ const extractFields = function(transaction) {
   return fields;
 };
 
+const getFooter = function(totalQty) {
+  let juice = "Juice";
+  if (totalQty > 1) {
+    juice = "Juices";
+  }
+  return `Total: ${totalQty} ${juice}`;
+};
+
 const generateQueryStatus = function(empTransactionsDetail) {
-  let header = "Employee ID,Beverage,Quantity,Date";
-  let totalQty = empTransactionsDetail.reduce(giveTotalQty, 0);
-  let footer = `Total: ${totalQty} Juices`;
+  const header = "Employee ID,Beverage,Quantity,Date";
+  const totalQty = empTransactionsDetail.reduce(giveTotalQty, 0);
+  const footer = getFooter(totalQty);
   let status = empTransactionsDetail.map(extractFields);
   status.unshift(header);
   status.push(footer);
@@ -41,3 +49,4 @@ exports.generateQueryStatus = generateQueryStatus;
 exports.status = status;
 exports.giveTotalQty = giveTotalQty;
 exports.extractFields = extractFields;
+exports.getFooter = getFooter;

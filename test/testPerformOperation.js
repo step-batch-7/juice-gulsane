@@ -57,7 +57,7 @@ describe("doQueryOperation", function() {
   it("should return an message when empId is not in transactions history", function() {
     let actualValue = doQueryOperation([], { empId: "11111" });
     let expectedValue =
-      "Employee ID,Beverage,Quantity,Date\n" + "Total: 0 Juices";
+      "Employee ID,Beverage,Quantity,Date\n" + "Total: 0 Juice";
     assert.strictEqual(actualValue, expectedValue);
   });
   it("should return transaction details if empId present in transaction history", function() {
@@ -68,7 +68,7 @@ describe("doQueryOperation", function() {
     let expectedValue =
       "Employee ID,Beverage,Quantity,Date\n" +
       "11111,orange,1,10-10-2019\n" +
-      "Total: 1 Juices";
+      "Total: 1 Juice";
     assert.strictEqual(actualValue, expectedValue);
   });
 });
@@ -155,7 +155,7 @@ describe("performOperation", function() {
       date()
     );
     let expectedValue =
-      "Employee ID,Beverage,Quantity,Date\n" + "Total: 0 Juices";
+      "Employee ID,Beverage,Quantity,Date\n" + "Total: 0 Juice";
     assert.strictEqual(actualValue, expectedValue);
   });
 });
