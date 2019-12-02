@@ -1,7 +1,8 @@
 const generateTransactionStatus = function(parsedUserArgs) {
   let firstHeader = ["Transaction Recorded:"];
   let secondHeader = ["Employee ID,Beverage,Quantity,Date"];
-  let fields = Object.values(parsedUserArgs);
+  parsedUserArgs.date = parsedUserArgs.date.toJSON();
+  let fields = extractFields(parsedUserArgs);
   let transactionStatus = [firstHeader, secondHeader, fields].join("\n");
   return transactionStatus;
 };

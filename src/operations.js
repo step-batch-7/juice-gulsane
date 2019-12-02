@@ -7,13 +7,17 @@ const extractEmpDetails = function(filterParameters) {
   return function(transaction) {
     let isEmpId = true;
     if (filterParameters["--empId"]) {
-      isEmpId = transaction["empId"] == filterParameters["--empId"];
+      isEmpId = transaction.empId === filterParameters["--empId"];
     }
     let isBeverage = true;
     if (filterParameters["--beverage"]) {
-      isBeverage = transaction["beverage"] == filterParameters["--beverage"];
+      isBeverage = transaction.beverage === filterParameters["--beverage"];
     }
-    return isEmpId && isBeverage;
+    let isDate = true;
+    if (filterParameters["--date"]) {
+      isDate = transaction.date.slice(0, 10) === filterParameters["--date"];
+    }
+    return isEmpId && isBeverage && isDate;
   };
 };
 

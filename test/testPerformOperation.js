@@ -94,7 +94,7 @@ describe("performOperation", function() {
         assert.strictEqual(path, "./hai");
         assert.strictEqual(
           content,
-          '[{"empId":"111","beverage":"orange","qty":1,"date":"2019-11-26T17:32:02.942Z"}]'
+          '[{"empId":"111","beverage":"orange","qty":1,"date":"2019-11-30T00:00:00.000Z"}]'
         );
         assert.strictEqual(encode, "utf8");
       },
@@ -105,7 +105,7 @@ describe("performOperation", function() {
     };
 
     let date = function() {
-      return "2019-11-26T17:32:02.942Z";
+      return new Date("2019-11-30");
     };
 
     let actualValue = performOperation(
@@ -117,7 +117,7 @@ describe("performOperation", function() {
     let expectedValue =
       "Transaction Recorded:\n" +
       "Employee ID,Beverage,Quantity,Date\n" +
-      "111,orange,1,2019-11-26T17:32:02.942Z";
+      "111,orange,1,2019-11-30T00:00:00.000Z";
 
     assert.deepStrictEqual(actualValue, expectedValue);
   });

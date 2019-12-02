@@ -1,14 +1,14 @@
 const performOperation = require("./src/performOperation.js").performOperation;
 const fs = require("fs");
 const generateDate = function() {
-  let date = new Date().toJSON();
+  let date = new Date();
   return date;
 };
 
 const main = function() {
   const userArgs = process.argv.slice(2);
-  const date = generateDate();
-  const filePath = "./transactionDetails.json";
+  const date = process.env.date || generateDate();
+  const filePath = process.env.DATAFILE || "./transactionDetails.json";
   const fileFunctions = {
     readFile: fs.readFileSync,
     writeFile: fs.writeFileSync,

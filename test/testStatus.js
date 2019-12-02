@@ -10,12 +10,13 @@ describe("generateTransactionStatus", function() {
     let actualValue = generateTransactionStatus({
       empId: "11111",
       beverage: "orange",
-      Qty: 1
+      qty: 1,
+      date: new Date("2019-11-30")
     });
     let expectedValue =
       "Transaction Recorded:\n" +
       "Employee ID,Beverage,Quantity,Date\n" +
-      "11111,orange,1";
+      "11111,orange,1,2019-11-30T00:00:00.000Z";
     assert.strictEqual(actualValue, expectedValue);
   });
 });
@@ -34,9 +35,9 @@ describe("extractFields", function() {
       empId: "11111",
       beverage: "orange",
       qty: 1,
-      date: "10-11-2019"
+      date: "2019-11-10"
     });
-    let expectedValue = ["11111", "orange", 1, "10-11-2019"];
+    let expectedValue = ["11111", "orange", 1, "2019-11-10"];
     assert.deepStrictEqual(actualValue, expectedValue);
   });
 });

@@ -1,8 +1,7 @@
 const updateTransaction = require("./operations.js").updateTransaction;
 const queryTransactions = require("./operations.js").queryTransactions;
 const status = require("./status.js").status;
-const transformUserArgsData = require("../utilsLab/transformUserArgsData.js")
-  .transformUserArgsData;
+const transformUserArgsData = require("./utilities.js").transformUserArgsData;
 
 const generateContent = function(filePath, readFile, existsFile) {
   let fileContent = existsFile(filePath) && readFile(filePath, "utf8");
@@ -43,8 +42,8 @@ const doQueryOperation = function(oldTransactions, transformedUserArgsData) {
 const performOperation = function(filePath, fileFunctions, userArgs, date) {
   let transformedUserArgsData = transformUserArgsData(userArgs);
   let parsedUserArgs = parseUserArgs(userArgs);
-  const readFile = fileFunctions["readFile"];
-  const existsFile = fileFunctions["existsFile"];
+  const readFile = fileFunctions.readFile;
+  const existsFile = fileFunctions.existsFile;
   const oldTransactions = generateContent(filePath, readFile, existsFile);
   if (transformedUserArgsData["--save"]) {
     let status = doSaveOperation(

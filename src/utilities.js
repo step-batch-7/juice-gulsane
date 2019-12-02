@@ -19,3 +19,4 @@ const transformUserArgsData = function(userArgs) {
 };
 
 exports.transformUserArgsData = transformUserArgsData;
+exports.pairOperationParameters = pairOperationParameters;
