@@ -2,7 +2,8 @@ const chai = require("chai");
 const assert = chai.assert;
 const performOperation = require("../src/performOperation.js").performOperation;
 const parseUserArgs = require("../src/performOperation.js").parseUserArgs;
-const generateContent = require("../src/performOperation.js").generateContent;
+const loadTransactionsData = require("../src/performOperation.js")
+  .loadTransactionsData;
 const doQueryOperation = require("../src/performOperation.js").doQueryOperation;
 const doSaveOperation = require("../src/performOperation.js").doSaveOperation;
 
@@ -22,7 +23,7 @@ describe("parseUserArgs", function() {
   });
 });
 
-describe("generateContent", function() {
+describe("loadTransactionsData", function() {
   it("should return an empty content if file path is wrong", function() {
     const existsFile = function(path) {
       assert.strictEqual(path, "./hai");
@@ -33,7 +34,7 @@ describe("generateContent", function() {
       assert.strictEqual(encode, "utf8");
       return "something";
     };
-    let actualValue = generateContent("./hai", readFile, existsFile);
+    let actualValue = loadTransactionsData("./hai", readFile, existsFile);
     let expectedValue = [];
     assert.deepStrictEqual(actualValue, expectedValue);
   });
@@ -47,7 +48,7 @@ describe("generateContent", function() {
       assert.strictEqual(encode, "utf8");
       return '{"ram":"mohan"}';
     };
-    let actualValue = generateContent("./hello", readFile, existsFile);
+    let actualValue = loadTransactionsData("./hello", readFile, existsFile);
     let expectedValue = { ram: "mohan" };
     assert.deepStrictEqual(actualValue, expectedValue);
   });
@@ -74,14 +75,14 @@ describe("doQueryOperation", function() {
 });
 
 describe("performOperation", function() {
-  it("it should choose save action if --save command is given", function() {
+  it("it should choose save action if --save command is given with valid arguements", function() {
     let userArgs = [
       "--save",
       "--beverage",
       "orange",
       "--empId",
       "111",
-      "qty",
+      "--qty",
       "1"
     ];
     const fileFunctions = {
@@ -122,8 +123,8 @@ describe("performOperation", function() {
     assert.deepStrictEqual(actualValue, expectedValue);
   });
 
-  it("should choose query action if --query command is given", function() {
-    const userArgs = ["--Query", "--empId", "12345"];
+  it("should choose query action if --query command is given with valid arguements", function() {
+    const userArgs = ["--query", "--empId", "12345"];
     const fileFunctions = {
       readFile: (path, encode) => {
         assert.strictEqual(path, "./hai");

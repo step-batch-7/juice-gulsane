@@ -5,12 +5,11 @@ describe("getPath", function() {
   it("should return default path if path is not injected", function() {
     const process = { env: { DATAFILE: "" } };
     let actualValue = config.getPath(process);
-    let expectedValue = "./transactionDetails.js";
+    let expectedValue = "./transactionDetails.json";
     assert.strictEqual(actualValue, expectedValue);
   });
   it("should return the enjected path if path is injected", function() {
     const process = { env: { DATAFILE: "./hello" } };
-    console.log(process);
     let actualValue = config.getPath(process);
     let expectedValue = "./hello";
     assert.strictEqual(actualValue, expectedValue);

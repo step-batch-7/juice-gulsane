@@ -2,8 +2,9 @@ const updateTransaction = require("./operations.js").updateTransaction;
 const queryTransactions = require("./operations.js").queryTransactions;
 const status = require("./status.js").status;
 const transformUserArgsData = require("./utilities.js").transformUserArgsData;
+const validateUserArgs = require("./validateUserArgs.js").validateUserArgs;
 
-const generateContent = function(filePath, readFile, existsFile) {
+const loadTransactionsData = function(filePath, readFile, existsFile) {
   let fileContent = existsFile(filePath) && readFile(filePath, "utf8");
   return JSON.parse(fileContent) || [];
 };
@@ -40,11 +41,15 @@ const doQueryOperation = function(oldTransactions, transformedUserArgsData) {
 };
 
 const performOperation = function(filePath, fileFunctions, userArgs, date) {
-  let transformedUserArgsData = transformUserArgsData(userArgs);
+  const transformedUserArgsData = transformUserArgsData(userArgs);
+  const isValidUserArgs = validateUserArgs(transformedUserArgsData);
+  if (!isValidUserArgs) {
+    return "please enter proper input";
+  }
   let parsedUserArgs = parseUserArgs(userArgs);
   const readFile = fileFunctions.readFile;
   const existsFile = fileFunctions.existsFile;
-  const oldTransactions = generateContent(filePath, readFile, existsFile);
+  const oldTransactions = loadTransactionsData(filePath, readFile, existsFile);
   if (transformedUserArgsData["--save"]) {
     let status = doSaveOperation(
       oldTransactions,
@@ -62,6 +67,6 @@ const performOperation = function(filePath, fileFunctions, userArgs, date) {
 
 exports.performOperation = performOperation;
 exports.parseUserArgs = parseUserArgs;
-exports.generateContent = generateContent;
+exports.loadTransactionsData = loadTransactionsData;
 exports.doSaveOperation = doSaveOperation;
 exports.doQueryOperation = doQueryOperation;

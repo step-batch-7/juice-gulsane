@@ -142,7 +142,7 @@ describe("queryTransactions", function() {
     ];
     assert.deepStrictEqual(actualValue, expectedValue);
   });
-  it("should give the the only status which related to the specified beverage and empId", function() {
+  it("should give the only status which related to the specified beverage and empId", function() {
     const actualValue = queryTransactions(
       [
         {

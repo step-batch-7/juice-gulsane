@@ -1,5 +1,5 @@
 const getPath = function(process) {
-  return process.env.DATAFILE || "./transactionDetails.js";
+  return process.env.DATAFILE || "./transactionDetails.json";
 };
 
 const getTime = function(process) {

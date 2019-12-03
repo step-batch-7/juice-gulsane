@@ -22,10 +22,7 @@ const extractFields = function(transaction) {
 };
 
 const getFooter = function(totalQty) {
-  let juice = "Juice";
-  if (totalQty > 1) {
-    juice = "Juices";
-  }
+  const juice = totalQty > 1 ? "Juices" : "Juice";
   return `Total: ${totalQty} ${juice}`;
 };
 

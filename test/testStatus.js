@@ -65,7 +65,7 @@ describe("getFooter", function() {
   });
   it("should return footer with plural juice syntax if qty is more than 1", function() {
     let actualValue = getFooter(2);
-    let expectedValue = "Total: 1 Juices";
-    asseert.strictEqual(actualValue, expectedValue);
+    let expectedValue = "Total: 2 Juices";
+    assert.strictEqual(actualValue, expectedValue);
   });
 });
